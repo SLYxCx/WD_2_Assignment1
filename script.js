@@ -25,17 +25,41 @@ function showTab(tabId) {
 // }
 
 // Convert Weight
-// function convertWeight(submit) {
-//     console.log('weight') // placeholder
-//     /*
-//   
-//     
-//     3. For each → convert values
-//          Based on radio selection
-//     4. Output (console.log to test it's working)
-//     5. Add element to the page to display outputs
-//     */
-// };
+const KgToLbs = input => input * 2.20462;
+const LbsToKg = input => input / 2.20462;
+
+function convertWeight() {
+    // Get user input from the number field (assuming only one value for simplicity)
+    const weightInput = parseFloat(document.querySelector('input[type="number"]').value);
+    if (isNaN(weightInput)) {
+        alert("Please enter a valid number for weight.");
+        return;
+    }
+
+    // Check which radio button is selected
+    const selectedConversion = document.querySelector('input[name="tabsW"]:checked').value;
+
+    let convertedValue = 0;
+
+    // Apply conversion based on the selected radio button
+    if (selectedConversion === "kg") {
+        convertedValue = KgToLbs(weightInput);
+    } else if (selectedConversion === "lb") {
+        convertedValue = LbsToKg(weightInput);
+    }
+
+    // Display the result on the page
+    const resultsSection = document.getElementById('results');
+    resultsSection.innerHTML = `<p>Converted Value: ${convertedValue.toFixed(2)}</p>`;
+    console.log(`Converted Value: ${convertedValue}`);
+}
+
+// Attach the convertWeight function to the submit button in the weight tab
+document.querySelector('#WeightSubmission button').addEventListener('click', function(event) {
+    event.preventDefault(); // Prevent form from submitting
+    convertWeight();
+});
+
 
 // Convert Distance
 // Mock data:
