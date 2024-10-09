@@ -1,95 +1,123 @@
-
 // default Tab - Weight
-var currentTabText = 'weight';
+var currentTabText = "weight";
 
 // Tab select - onClick
 function showTab(tabId) {
-    var currentTab = document.getElementById(currentTabText);
-    var selected = document.getElementById(tabId)
-        if (selected.classList.contains('hidden')) {
-            currentTab.classList.add('hidden')
-            selected.classList.remove('hidden')
+  var currentTab = document.getElementById(currentTabText);
+  var selected = document.getElementById(tabId);
+  if (selected.classList.contains("hidden")) {
+    currentTab.classList.add("hidden");
+    selected.classList.remove("hidden");
 
-            currentTabText = tabId;
-            console.log(currentTabText)
-        } else {
-            console.log(currentTab + 'hidden')
-            
-        }
+    currentTabText = tabId;
+    console.log(currentTabText);
+  } else {
+    console.log(currentTab + "hidden");
+  }
 }
 
-// Submit Button 
-// function submitBtn {
-//     console.log('submit')
-//  1. Gathers all information and converts it and checks for errors
-// }
+function Input() {
+  let inputElement;
+  if (currentTabText === "distance") {
+    inputElement = document.querySelector("#inputDataDistance");
+  } else if (currentTabText === "weight") {
+    inputElement = document.querySelector("#inputDataWeight");
+  } else if (currentTabText === "temperature") {
+    inputElement = document.querySelector("#inputDataTemp");
+  }
 
-// Convert Weight
-const KgToLbs = input => input * 2.20462;
-const LbsToKg = input => input / 2.20462;
+  const inputData = inputElement.value;
+  const isValid = /^[0-9.,]+$/.test(inputData);
 
-function convertWeight() {
-    // Get user input from the number field (assuming only one value for simplicity)
-    const weightInput = parseFloat(document.querySelector('input[type="number"]').value);
-    if (isNaN(weightInput)) {
-        alert("Please enter a valid number for weight.");
-        return;
-    }
-
-    // Check which radio button is selected
-    const selectedConversion = document.querySelector('input[name="tabsW"]:checked').value;
-
-    let convertedValue = 0;
-
-    // Apply conversion based on the selected radio button
-    if (selectedConversion === "kg") {
-        convertedValue = KgToLbs(weightInput);
-    } else if (selectedConversion === "lb") {
-        convertedValue = LbsToKg(weightInput);
-    }
-
-    // Display the result on the page
-    const resultsSection = document.getElementById('results');
-    resultsSection.innerHTML = `<p>Converted Value: ${convertedValue.toFixed(2)}</p>`;
-    console.log(`Converted Value: ${convertedValue}`);
+  if (!isValid) {
+    alert("Please enter numbers and commas only.");
+    return;
+  }
+  const userInput = inputData.split(",");
+  return userInput;
 }
 
-// Attach the convertWeight function to the submit button in the weight tab
-document.querySelector('#WeightSubmission button').addEventListener('click', function(event) {
-    event.preventDefault(); // Prevent form from submitting
-    convertWeight();
-});
+var userInput;
+function handleInput() {
+  userInput = Input();
+  const convertedData = document.createElement("p");
 
+  if (currentTabText === "distance") {
+    convertedData.innerHTML = convertDistance(userInput);
+    document.getElementById("resultsDistance").appendChild(convertedData);
+  } else if (currentTabText === "weight") {
+    convertedData.innerHTML = convertWeight(userInput);
+    document.getElementById("resultsWeight").appendChild(convertedData);
+  } else if (currentTabText === "temperature") {
+    convertedData.innerHTML = convertTemp(userInput);
+    document.getElementById("resultsTemp").appendChild(convertedData);
+  }
+}
+var isKmToMi;
+function handleMi() {
+  isKmToMi = false;
+}
+function handleKm() {
+  isKmToMi = true;
+}
 
-// Convert Distance
-// Mock data:
-var userInput = [26, 10, 50, -40]; // Seems simplest to make the user input an array of numbers; even if it's one value
+var isKgToLbs;
 
-var isKmToMi = true; // if set to km → mi (if mi → km set to false) ("is Kilometers To Miles")
+function handleKg() {
+  isKgToLbs = true;
+}
 
-// Formulas
-const KilometersToMiles = input => input / 1.6;
-const MilesToKilometers = input => input * 1.6;
+function handleLb() {
+  isKgToLbs = false;
+}
 
-// Conversion: takes in user input array → Goes through each index, converts them based on if isKmToMi is 'true' or 'false'
-//      (map instead of forEach - because map is "ideal when you need to transform data and get a new array as the output")
+var isCtoF;
+function handleC() {
+  isCtoF = true;
+}
+
+function handleF() {
+  isCtoF = false;
+}
+
+const KilometersToMiles = (input) => input / 1.6;
+const MilesToKilometers = (input) => input * 1.6;
+
 const convertDistance = (userInput) => {
-    var convertedArray = [];
-    if (isKmToMi) {
-        convertedArray = userInput.map(element => KilometersToMiles(element));
-    } else {
-        convertedArray = userInput.map(element => MilesToKilometers(element));
-    }
-    return convertedArray;
+  var convertedArray = [];
+  if (isKmToMi) {
+    convertedArray = userInput.map((element) => KilometersToMiles(element));
+  } else {
+    convertedArray = userInput.map((element) => MilesToKilometers(element));
+  }
+
+  return convertedArray;
 };
 
-const convertedData = document.createElement("p");
-convertedData.innerHTML = convertDistance(userInput);
-document.getElementById('results').appendChild(convertedData);
-console.log(convertDistance(userInput));
+const KilogramsToPounds = (input) => input * 2.20462;
+const PoundsToKilograms = (input) => input / 2.20462;
 
-// Convert Temperature
-// function convertTemperature {
-//     console.log('temperature')
-// };
+const CelsiusToFahrenheit = (input) => (input * 9) / 5 + 32;
+const FahrenheitToCelsius = (input) => ((input - 32) * 5) / 9;
 
+const convertWeight = (userInput) => {
+  var convertedArray = [];
+  if (isKgToLbs) {
+    convertedArray = userInput.map((element) => KilogramsToPounds(element));
+  } else {
+    convertedArray = userInput.map((element) => PoundsToKilograms(element));
+  }
+
+  return convertedArray;
+};
+
+const convertTemp = (userInput) => {
+  var convertedArray = [];
+  if (isCtoF) {
+    convertedArray = userInput.map((element) => CelsiusToFahrenheit(element));
+  } else {
+    convertedArray = userInput.map((element) => FahrenheitToCelsius(element));
+  }
+
+  return convertedArray;
+};
