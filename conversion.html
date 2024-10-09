@@ -4,17 +4,127 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Conversion Page</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com" rel="stylesheet"></script>
+    <script src="calculator.js" defer></script>
 </head>
-
-<body class="bg-blue-100 300 font sans">
 <!--Header-->
-    <header class="bg-blue-200 shadow md">
+    <header class="bg-green-200 shadow md">
+        <!-- Webpage title? -->
         <div class="container ex auto p-6 justify-between items-center">
-            <h1 class="text-2xl font-bold">Header Text</h1>
+            <h1 class="text-2xl font-bold">Calculator</h1>
         </div>
+        <!-- Insert navbar top here (Not sure if needed) -->
     </header>
-
-
-</body>
+    <body class="bg-blue-100 300 font sans">
+        <!-- Top Navbar for components -->
+        <div class="tab-section bg-gray-100 p-5 rounded-lg backdrop-filter backdrop-blur-lg bg-opacity-40 w-[1200px] min-h-[400px] border-2 border-indigo-200">
+            <div class="flex flex-wrap gap-1">
+                <!-- Tab Buttons -->
+                <button class="p-4 rounded-lg text-gray-700 font-bold hover:bg-gray-300 hover:bg-opacity-40 flex-grow w-80"
+                    data-tab-target="#tab1" onclick="openTab(event, '#tab1')">Weight</button>
+                <button class="p-4 rounded-lg text-gray-700 font-bold hover:bg-gray-300 hover:bg-opacity-40 flex-grow w-80"
+                    data-tab-target="#tab2" onclick="openTab(event, '#tab2')">Distance</button>
+                <button class="p-4 rounded-lg text-gray-700 font-bold hover:bg-gray-300 hover:bg-opacity-40 flex-grow w-80"
+                    data-tab-target="#tab3" onclick="openTab(event, '#tab3')">Temperature</button>
+            </div>
+    
+            <!-- Tab Content -->
+            <div class="mt-4">
+                <!-- Tab 1: Weight Conversion -->
+                <div id="tab1" class="tab-content text-gray-700">
+                    <h4 class="font-bold mt-9 mb-4 text-2xl">Weight</h4>
+                    <form id="weightConversionForm" onsubmit="return convertWeight(event)">
+                        <label for="WeightInputScale" class="block">Choose Scale:</label>
+                        <select name="WeightScale" id="WeightInputScale" class="mt-1 mb-4">
+                            <option value="Pounds">Pounds (lb.)</option>
+                            <option value="Kilograms">Kilograms (kg)</option>
+                        </select>
+                        
+                        <label for="WeightInputBox" class="block">Enter weight:</label>
+                        <input type="number" id="WeightInputBox" name="WeightInput" class="mt-1 mb-4" required>
+                        
+                        <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded">Convert</button>
+                    </form>
+                    
+                    <!-- Weight Output -->
+                    <p id="weightOutputMessage" class="mt-4">
+                        Your current weight in <span id="weightOutputScale"></span> is: <span id="weightOutputValue"></span>
+                    </p>
+                </div>
+    
+                <!-- Tab 2: Distance Conversion -->
+                <div id="tab2" class="tab-content text-gray-700 hidden">
+                    <h4 class="font-bold mt-9 mb-4 text-2xl">Distance</h4>
+                    <form id="distanceConversionForm" onsubmit="return convertDistance(event)">
+                        <label for="DistanceInputScale" class="block">Choose Scale:</label>
+                        <select name="DistanceScale" id="DistanceInputScale" class="mt-1 mb-4">
+                            <option value="Miles">Miles (mi.)</option>
+                            <option value="Kilometers">Kilometers (km)</option>
+                        </select>
+                        
+                        <label for="DistanceInputBox" class="block">Enter distance:</label>
+                        <input type="number" id="DistanceInputBox" name="DistanceInput" class="mt-1 mb-4" required>
+                        
+                        <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded">Convert</button>
+                    </form>
+                    
+                    <!-- Distance Output -->
+                    <p id="distanceOutputMessage" class="mt-4">
+                        Your current distance in <span id="distanceOutputScale"></span> is: <span id="distanceOutputValue"></span>
+                    </p>
+                </div>
+    
+                <!-- Tab 3: Temperature Conversion -->
+                <div id="tab3" class="tab-content text-gray-700 hidden">
+                    <h4 class="font-bold mt-9 mb-4 text-2xl">Temperature</h4>
+                    <form id="temperatureConversionForm" onsubmit="return convertTemperature(event)">
+                        <label for="TemperatureInputScale" class="block">Choose Scale:</label>
+                        <select name="TemperatureScale" id="TemperatureInputScale" class="mt-1 mb-4">
+                            <option value="Celsius">Celsius (°C)</option>
+                            <option value="Fahrenheit">Fahrenheit (°F)</option>
+                        </select>
+                        
+                        <label for="TemperatureInputBox" class="block">Enter temperature:</label>
+                        <input type="number" id="TemperatureInputBox" name="TemperatureInput" class="mt-1 mb-4" required>
+                        
+                        <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded">Convert</button>
+                    </form>
+                    
+                    <!-- Temperature Output -->
+                    <p id="temperatureOutputMessage" class="mt-4">
+                        Your current temperature in <span id="temperatureOutputScale"></span> is: <span id="temperatureOutputValue"></span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    
+        <!-- JavaScript for Tab Switching -->
+        <script>
+            function openTab(event, tabId) {
+                // Hide all tab content
+                const tabs = document.querySelectorAll('.tab-content');
+                tabs.forEach(tab => tab.classList.add('hidden'));
+    
+                // Remove active state from all tab buttons
+                const buttons = document.querySelectorAll('[data-tab-target]');
+                buttons.forEach(button => button.classList.remove('active'));
+    
+                // Show the selected tab
+                const activeTab = document.querySelector(tabId);
+                activeTab.classList.remove('hidden');
+    
+                // Add active class to the clicked button
+                event.currentTarget.classList.add('active');
+            }
+        </script>
+    
+        <style>
+            .hidden {
+                display: none;
+            }
+            .active {
+                background-color: rgba(209, 213, 219, 0.4); /* Tailwind gray-300 opacity-40 */
+            }
+        </style>
+    </body>    
 </html>
