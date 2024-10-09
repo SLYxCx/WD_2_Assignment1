@@ -11,10 +11,22 @@ function showTab(tabId) {
 
     currentTabText = tabId;
     console.log(currentTabText);
-  } else {
-    console.log(currentTab + "hidden");
   }
 }
+
+function getPlaceholderText(tabId) {
+  switch (tabId) {
+    case "weight":
+      return "Enter weight values (1,2,3)";
+    case "distance":
+      return "Enter distance values (1,2,3)";
+    case "temperature":
+      return "Enter temperature values (1,2,3)";
+    default:
+      return "";
+  }
+}
+
 
 function Input() {
   let inputElement;
@@ -27,7 +39,8 @@ function Input() {
   }
 
   const inputData = inputElement.value;
-  const isValid = /^[0-9.,]+$/.test(inputData);
+  const isValid = /^[0-9]+(\.[0-9]+)?(,[0-9]+(\.[0-9]+)?)*$/.test(inputData);
+
 
   if (!isValid) {
     alert("Please enter numbers and commas only.");
@@ -42,6 +55,9 @@ function handleInput() {
   userInput = Input();
   const convertedData = document.createElement("p");
 
+  // Clear previous results
+  document.getElementById("results" + capitalizeFirstLetter(currentTabText)).innerHTML = "";
+
   if (currentTabText === "distance") {
     convertedData.innerHTML = convertDistance(userInput);
     document.getElementById("resultsDistance").appendChild(convertedData);
@@ -53,6 +69,13 @@ function handleInput() {
     document.getElementById("resultsTemp").appendChild(convertedData);
   }
 }
+
+function capitalizeFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+
+
 var isKmToMi;
 function handleMi() {
   isKmToMi = false;
@@ -80,9 +103,18 @@ function handleF() {
   isCtoF = false;
 }
 
+// Calcuation Definitions
+
 const KilometersToMiles = (input) => input / 1.6;
 const MilesToKilometers = (input) => input * 1.6;
 
+const KilogramsToPounds = (input) => input * 2.20462;
+const PoundsToKilograms = (input) => input / 2.20462;
+
+const CelsiusToFahrenheit = (input) => (input * 9) / 5 + 32;
+const FahrenheitToCelsius = (input) => ((input - 32) * 5) / 9;
+
+// Distance Conversion  
 const convertDistance = (userInput) => {
   var convertedArray = [];
   if (isKmToMi) {
@@ -94,12 +126,7 @@ const convertDistance = (userInput) => {
   return convertedArray;
 };
 
-const KilogramsToPounds = (input) => input * 2.20462;
-const PoundsToKilograms = (input) => input / 2.20462;
-
-const CelsiusToFahrenheit = (input) => (input * 9) / 5 + 32;
-const FahrenheitToCelsius = (input) => ((input - 32) * 5) / 9;
-
+// Weight Conversion
 const convertWeight = (userInput) => {
   var convertedArray = [];
   if (isKgToLbs) {
@@ -111,6 +138,7 @@ const convertWeight = (userInput) => {
   return convertedArray;
 };
 
+// Temperature Conversion.
 const convertTemp = (userInput) => {
   var convertedArray = [];
   if (isCtoF) {
