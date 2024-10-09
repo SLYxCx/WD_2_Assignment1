@@ -21,16 +21,17 @@ function showTab(tabId) {
 // Submit Button 
 // function submitBtn {
 //     console.log('submit')
+//  1. Gathers all information and converts it and checks for errors
 // }
 
 // Convert Weight
 // function convertWeight(submit) {
 //     console.log('weight') // placeholder
 //     /*
-//     1. Make the Submit button work
-//     2. Input to take data to an array (comma separated values)
+//   
+//     
 //     3. For each → convert values
-//         Based on radio selection
+//          Based on radio selection
 //     4. Output (console.log to test it's working)
 //     5. Add element to the page to display outputs
 //     */
