@@ -53,7 +53,6 @@ function Input() {
 var userInput;
 function handleInput() {
   userInput = Input();
-  console.log(userInput)
   const convertedData = document.createElement("p");
 
   if (currentTabText === "distance") {
@@ -140,7 +139,5 @@ const convertTemp = (userInput) => {
   } else {
     convertedArray = userInput.map((element) => FahrenheitToCelsius(element));
   }
-
-  console.log(convertedArray)
   return convertedArray;
 };
