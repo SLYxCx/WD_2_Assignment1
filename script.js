@@ -53,10 +53,8 @@ function Input() {
 var userInput;
 function handleInput() {
   userInput = Input();
+  console.log(userInput)
   const convertedData = document.createElement("p");
-
-  // Clear previous results
-  document.getElementById("results" + capitalizeFirstLetter(currentTabText)).innerHTML = "";
 
   if (currentTabText === "distance") {
     convertedData.innerHTML = convertDistance(userInput);
@@ -68,10 +66,6 @@ function handleInput() {
     convertedData.innerHTML = convertTemp(userInput);
     document.getElementById("resultsTemp").appendChild(convertedData);
   }
-}
-
-function capitalizeFirstLetter(string) {
-  return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 
@@ -147,5 +141,6 @@ const convertTemp = (userInput) => {
     convertedArray = userInput.map((element) => FahrenheitToCelsius(element));
   }
 
+  console.log(convertedArray)
   return convertedArray;
 };
